@@ -7,13 +7,13 @@ import java.net.*;
 
 public class Client {
  
-  public final static int SOCKET_PORT = 300;      
-  public final static String SERVER = "127.0.0.1";  
+  public final static int socket_port = 300;   //Port    
+  public final static String server = "localhost";  //Server IP
   public final static String
-       FILE_TO_RECEIVED = "C:\\Users\\musta\\Desktop\\Alıcı\\Deneme.txt";  
+       file_to_received = "C:\\Users\\musta\\Desktop\\Alıcı\\Deneme.txt"; //Dosyanın geleceği onum 
                                                             
  
-  public final static int FILE_SIZE = 6022386; 
+  public final static int file_size = 6022386; 
  
   public static void main (String [] args ) throws IOException {
     int bytesRead;
@@ -22,13 +22,13 @@ public class Client {
     BufferedOutputStream bos = null;
     Socket sock = null;
     try {
-      sock = new Socket(SERVER, SOCKET_PORT);
+      sock = new Socket(server, socket_port);
       System.out.println("Bağlanıyor...");
  
       // receive file
-      byte [] mybytearray  = new byte [FILE_SIZE];
+      byte [] mybytearray  = new byte [file_size];
       InputStream is = sock.getInputStream();
-      fos = new FileOutputStream(FILE_TO_RECEIVED);
+      fos = new FileOutputStream(file_to_received);
       bos = new BufferedOutputStream(fos);
       bytesRead = is.read(mybytearray,0,mybytearray.length);
       current = bytesRead;
@@ -41,7 +41,7 @@ public class Client {
  
       bos.write(mybytearray, 0 , current);
       bos.flush();
-      System.out.println("File " + FILE_TO_RECEIVED
+      System.out.println("File " + file_to_received
           + " downloaded (" + current + " bytes read)");
         System.out.println("Dosya Aktarıldı");
     }
