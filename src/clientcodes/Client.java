@@ -1,56 +1,34 @@
 
 package clientcodes;
 
-import java.io.*;
-import java.net.*;
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 
 public class Client {
- 
-  public final static int socket_port = 300;   //Port    
-  public final static String server = "localhost";  //Server IP
-  public final static String
-       file_to_received = "C:\\Users\\musta\\Desktop\\Alıcı\\Deneme.txt"; //Dosyanın geleceği onum 
-                                                            
- 
-  public final static int file_size = 6022386; 
- 
-  public static void main (String [] args ) throws IOException {
-    int bytesRead;
-    int current = 0;
-    FileOutputStream fos = null;
-    BufferedOutputStream bos = null;
-    Socket sock = null;
-    try {
-      sock = new Socket(server, socket_port);
-      System.out.println("Bağlanıyor...");
- 
-      // receive file
-      byte [] mybytearray  = new byte [file_size];
-      InputStream is = sock.getInputStream();
-      fos = new FileOutputStream(file_to_received);
-      bos = new BufferedOutputStream(fos);
-      bytesRead = is.read(mybytearray,0,mybytearray.length);
-      current = bytesRead;
- 
-      do {
-         bytesRead =
-            is.read(mybytearray, current, (mybytearray.length-current));
-         if(bytesRead >= 0) current += bytesRead;
-      } while(bytesRead > -1);
- 
-      bos.write(mybytearray, 0 , current);
-      bos.flush();
-      System.out.println("File " + file_to_received
-          + " downloaded (" + current + " bytes read)");
-        System.out.println("Dosya Aktarıldı");
-    }
-    finally {
-      if (fos != null) fos.close();
-      if (bos != null) bos.close();
-      if (sock != null) sock.close();
-    }
-  }
- 
-}
+    public static void main(String[] args) throws IOException {
+        Socket socket = null;
+        String host = "localhost";
 
+        socket = new Socket(host,300);
+
+        File file = new File("C:\\Users\\musta\\Desktop\\Alıcı");
+    
+        long length = file.length();
+        byte[] bytes = new byte[1024];
+        InputStream in = new FileInputStream(file);
+        OutputStream out = socket.getOutputStream();
+
+        int count;
+        while ((count = in.read(bytes)) > 0) {
+            out.write(bytes, 0, count);
+        }
+
+        out.close();
+        in.close();
+        socket.close();
+    }
+}
