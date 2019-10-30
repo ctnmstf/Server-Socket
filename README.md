@@ -1,2 +1,0 @@
-# Server-Socket
-Client kodları.
